@@ -10,6 +10,8 @@ import type {
 } from '../types/types';
 import { FormContext } from './FormContext';
 import { plansData } from '../data/plansData';
+import { validateStep } from '../utils/validation';
+import { DEFAULT_PLAN_TITLE } from '../constants';
 
 interface FormProviderProps {
   children: ReactNode;
@@ -17,8 +19,10 @@ interface FormProviderProps {
 
 export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
   const initialSelectedPlan = useMemo(() => {
-    // Encontra o plano "Arcade" para ser o valor inicial
-    const defaultPlan = plansData.find(plan => plan.title === 'Arcade');
+    // Encontra o plano padrão usando a constante
+    const defaultPlan = plansData.find(
+      plan => plan.title === DEFAULT_PLAN_TITLE
+    );
     // Se não encontrar, retorna null
     if (!defaultPlan) {
       return null;
@@ -40,54 +44,28 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     selectedPlan: initialSelectedPlan,
     selectedAddOns: [],
   });
-  console.log(' formData:', formData);
 
   const [isConfirmed, setIsConfirmed] = useState(false);
-  console.log(' isConfirmed:', isConfirmed);
 
   const [errors, setErrors] = useState<FormErrors>({});
 
-  // Função de validação movida para o Provider
+  // Função de validação usando utilitários separados
   const validateForm = (step?: number): boolean => {
-    console.log(' step:', step);
-    const newErrors: FormErrors = {};
-    const requiredMsg = 'This field is required';
-    const invalidMsg = 'Invalid Input';
+    let newErrors: FormErrors = {};
 
-    // Validação da Etapa 1: Personal Info
-    if (!step || step === 1) {
-      // Usando o operador de asserção non-null (!)
-      if (!formData.name!.trim()) {
-        newErrors.name = requiredMsg;
-      }
-      if (!formData.email!.trim()) {
-        newErrors.email = requiredMsg;
-      } else if (!formData.email!.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
-        newErrors.email = invalidMsg;
-      }
-      if (!formData.phone!.trim()) {
-        newErrors.phone = requiredMsg;
-      } else if (!formData.phone!.match(/^\+?\d{9,15}$/)) {
-        newErrors.phone = invalidMsg;
+    if (step) {
+      // Valida apenas o step específico
+      newErrors = validateStep(step, formData);
+    } else {
+      // Valida todos os steps se nenhum step for especificado
+      for (let i = 1; i <= 4; i++) {
+        const stepErrors = validateStep(i, formData);
+        newErrors = { ...newErrors, ...stepErrors };
       }
     }
 
-    // Validação da Etapa 2: Select Plan (Exemplo: garantir que um plano foi selecionado)
-    if (!step || step === 2) {
-      if (!formData.selectedPlan) {
-        newErrors.selectedPlan = 'Please select a plan';
-      }
-    }
-
-    // Validação da Etapa 3: Add-ons (Exemplo: talvez nenhum add-on seja obrigatório)
-    // if (!step || step === 3) {
-    //   if (formData.selectedAddOns.length === 0) {
-    //     newErrors.selectedAddOns = "Please select at least one add-on";
-    //   }
-    // }
-
-    setErrors(newErrors); // Atualiza o estado de erros
-    return Object.keys(newErrors).length === 0; // Retorna true se não houver erros
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   // Funções de atualização de dados
