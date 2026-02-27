@@ -16,16 +16,17 @@ export default {
     '!src/vite-env.d.ts',
   ],
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          jsx: 'react-jsx',
+          isolatedModules: false,
+        },
         isolatedModules: false,
       },
-      isolatedModules: false,
-    }],
+    ],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  transformIgnorePatterns: [
-    'node_modules/(?!(.*\\.mjs$))',
-  ],
+  transformIgnorePatterns: ['node_modules/(?!(.*\\.mjs$))'],
 };
