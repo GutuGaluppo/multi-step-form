@@ -16,7 +16,7 @@ export const validateStep = (step: number, formData: IFormData): FormErrors => {
   const errors: FormErrors = {};
 
   switch (step) {
-    case STEPS.PERSONAL_INFO:
+    case STEPS.PERSONAL_INFO: {
       // Validate name
       const nameError = validators.required(formData.name);
       if (nameError) errors.name = nameError;
@@ -29,12 +29,14 @@ export const validateStep = (step: number, formData: IFormData): FormErrors => {
       const phoneError = validators.phone(formData.phone);
       if (phoneError) errors.phone = phoneError;
       break;
+    }
 
-    case STEPS.SELECT_PLAN:
+    case STEPS.SELECT_PLAN: {
       // Validate plan selection
       const planError = validators.requiredSelection(formData.selectedPlan);
       if (planError) errors.selectedPlan = planError;
       break;
+    }
 
     case STEPS.ADD_ONS:
       // Add-ons are optional, no validation needed
