@@ -1,7 +1,7 @@
 import { useIsMobile } from '../../hooks';
 import { Discount, Price, StyledCard } from './styled';
 
-interface CardPropsType {
+interface PlanCardProps {
   selectedPlan: boolean;
   title: string;
   icon: string;
@@ -10,19 +10,24 @@ interface CardPropsType {
   onClick: () => void;
 }
 
-const Card = ({
+/**
+ * PlanCard component displays a selectable subscription plan option
+ * Shows plan details including title, price, icon, and optional discount
+ * Adapts layout based on mobile/desktop viewport
+ */
+const PlanCard = ({
   selectedPlan,
   title,
   icon,
   price,
   discount,
   onClick,
-}: CardPropsType) => {
+}: PlanCardProps) => {
   const isMobile = useIsMobile();
 
   return (
     <StyledCard onClick={onClick} selectedPlan={selectedPlan}>
-      <img src={icon} alt='' width={40} />
+      <img src={icon} alt={`${title} plan icon`} width={40} />
       <div>
         <h4>{title}</h4>
         <Price>{price}</Price>
@@ -33,4 +38,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default PlanCard;

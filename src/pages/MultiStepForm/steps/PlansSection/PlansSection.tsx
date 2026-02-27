@@ -1,7 +1,7 @@
 // PlansSection.tsx - REFACTORED VERSION
 import { FormGroup } from '@mui/material';
 import { useCallback } from 'react';
-import Card from '../../../../components/Card';
+import PlanCard from '../../../../components/PlanCard';
 import { plansData } from '../../../../data/plansData';
 import { useForm } from '../../../../hooks';
 import type { BillingPeriod, ISelectedPlan } from '../../../../types/types';
@@ -81,15 +81,15 @@ const PlansSection = () => {
   return (
     <StyledContainer>
       <CardsWrapper>
-        {plansData.map(card => (
-          <Card
-            key={card.title}
-            selectedPlan={card.title === selectedPlanTitle}
-            title={card.title}
-            price={isYearly ? card.yearlyPrice : card.monthlyPrice}
-            icon={card.icon}
-            discount={isYearly && card.discount}
-            onClick={() => handlePlanSelect(card.title)}
+        {plansData.map(plan => (
+          <PlanCard
+            key={plan.title}
+            selectedPlan={plan.title === selectedPlanTitle}
+            title={plan.title}
+            price={isYearly ? plan.yearlyPrice : plan.monthlyPrice}
+            icon={plan.icon}
+            discount={isYearly && plan.discount}
+            onClick={() => handlePlanSelect(plan.title)}
           />
         ))}
       </CardsWrapper>
