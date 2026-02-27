@@ -4,7 +4,8 @@
   <h3>An interactive and responsive multi-step form</h3>
   <p>Frontend Mentor challenge built with React, TypeScript and Material-UI</p>
 
-  ![Preview](./docs/screenshots/preview.jpg)
+![Preview](./docs/screenshots/preview.jpg)
+
 </div>
 
 ## About The Project
@@ -62,16 +63,19 @@ This project is a complete implementation of an interactive multi-step form, dev
 ## Tech Stack
 
 ### Core
+
 - **[React 19](https://react.dev/)** - JavaScript library for building user interfaces
 - **[TypeScript](https://www.typescriptlang.org/)** - JavaScript superset with static typing
 - **[Vite](https://vitejs.dev/)** - Next generation build tool and dev server
 
 ### UI/Styling
+
 - **[Material-UI (MUI) v7](https://mui.com/)** - React component library
 - **[Emotion](https://emotion.sh/)** - CSS-in-JS for styled components
 - **Styled Components** - Custom styling with Theme Provider
 
 ### Code Quality
+
 - **[ESLint](https://eslint.org/)** - Linter for identifying problems
 - **[Prettier](https://prettier.io/)** - Code formatter
 - **[Jest](https://jestjs.io/)** - Testing framework
@@ -88,7 +92,7 @@ multi-step-form/
 │   │   ├── ErrorBoundary/     # Error handling
 │   │   └── layout/            # Layout components
 │   │       ├── Header/
-│   │       ├── Footer/
+│   │       ├── Actions/
 │   │       └── Navbar/
 │   ├── contexts/              # Context API
 │   │   ├── FormContext.ts    # Form context
@@ -133,16 +137,19 @@ multi-step-form/
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone <repository-url>
 ```
 
 2. Navigate to the project folder
+
 ```bash
 cd multi-step-form
 ```
 
 3. Install dependencies
+
 ```bash
 npm install
 ```
@@ -150,24 +157,31 @@ npm install
 ### Available Scripts
 
 #### Development
+
 ```bash
 npm run dev
 ```
+
 Starts the development server at [http://localhost:5173](http://localhost:5173)
 
 #### Build
+
 ```bash
 npm run build
 ```
+
 Compiles TypeScript and creates optimized production build in the `dist/` folder
 
 #### Preview
+
 ```bash
 npm run preview
 ```
+
 Preview the production build locally
 
 #### Testing
+
 ```bash
 npm test              # Run tests
 npm run test:watch    # Run tests in watch mode
@@ -175,6 +189,7 @@ npm run test:coverage # Run tests with coverage
 ```
 
 #### Lint and Formatting
+
 ```bash
 npm run lint          # Check code issues
 npm run lint:fix      # Fix issues automatically
@@ -185,20 +200,26 @@ npm run format:check  # Check formatting
 ## Architecture and Patterns
 
 ### State Management
+
 The project uses **Context API** to manage global form state, avoiding prop drilling and centralizing business logic.
 
 ### Custom Hooks
+
 - **useMultiStepForm**: Manages navigation between steps
 - **useForm**: Manages form state and validation
 - **useIsMobile**: Detects if the device is mobile for conditional rendering
 
 ### Responsiveness
+
 The application automatically adapts to different screen sizes:
+
 - Mobile: Vertical layout with bottom navigation
 - Desktop: Horizontal layout with side navigation
 
 ### Validation
+
 Robust validation system that checks:
+
 - Required fields are filled
 - Correct email format
 - At least one item selected in choice steps
@@ -206,6 +227,7 @@ Robust validation system that checks:
 ## Deployment
 
 The project can be easily deployed to:
+
 - [Vercel](https://vercel.com/)
 - [Netlify](https://www.netlify.com/)
 - [GitHub Pages](https://pages.github.com/)
@@ -229,6 +251,7 @@ vercel
 ## Key Learnings
 
 This project demonstrates:
+
 - Scalable React application architecture
 - Complex state management
 - TypeScript for type safety
@@ -242,7 +265,7 @@ This project was developed for educational purposes as part of the Frontend Ment
 
 ## Author
 
-**Augusto Galuppo**
+**Gutu Galuppo**
 
 ---
 
