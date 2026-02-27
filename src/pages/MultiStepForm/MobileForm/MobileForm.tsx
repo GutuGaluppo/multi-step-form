@@ -1,5 +1,5 @@
 import { MobileNavbar } from '../../../components';
-import { Footer } from '../../../components/layout';
+import { Actions } from '../../../components/layout';
 import MultiStepForm from '../MultiStepForm';
 
 interface MobileFormProps {
@@ -27,7 +27,7 @@ const MobileForm = ({
         navigateTo={navigateTo}
         isConfirmed={isConfirmed}
       />
-      <Footer
+      <Actions
         activeStep={activeStep}
         nextStep={nextStep}
         prevStep={prevStep}

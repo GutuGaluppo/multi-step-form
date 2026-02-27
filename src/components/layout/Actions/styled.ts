@@ -1,6 +1,6 @@
 import { Stack, styled } from '@mui/material';
 
-export const FooterContainer = styled(Stack)(({ theme }) => ({
+export const ActionsContainer = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
   paddingBottom: theme.spacing(5),

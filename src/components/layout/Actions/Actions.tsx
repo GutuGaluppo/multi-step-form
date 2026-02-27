@@ -1,21 +1,21 @@
 import { Button } from '@mui/material';
-import { FooterContainer } from './styled';
+import { ActionsContainer } from './styled';
 
-interface FooterProps {
+interface ActionsProps {
   activeStep: number;
   nextStep: () => void;
   prevStep: () => void;
   handleConfirm: () => void;
 }
 
-const Footer = ({
+const Actions = ({
   activeStep,
   nextStep,
   prevStep,
   handleConfirm,
-}: FooterProps) => {
+}: ActionsProps) => {
   return (
-    <FooterContainer>
+    <ActionsContainer>
       {activeStep !== 1 && (
         <Button variant='text' onClick={prevStep}>
           Go Back
@@ -40,8 +40,8 @@ const Footer = ({
           Confirm
         </Button>
       )}
-    </FooterContainer>
+    </ActionsContainer>
   );
 };
 
-export default Footer;
+export default Actions;
