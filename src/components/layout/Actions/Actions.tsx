@@ -1,44 +1,60 @@
-import { Button } from '@mui/material';
+import { useForm } from '../../../hooks';
+import ActionButton from './ActionButton';
 import { ActionsContainer } from './styled';
 
-interface ActionsProps {
-  activeStep: number;
-  nextStep: () => void;
-  prevStep: () => void;
-  handleConfirm: () => void;
-}
+const Actions = () => {
+  const {
+    validateForm,
+    isConfirmed,
+    setIsConfirmed,
+    activeStep,
+    nextStep,
+    prevStep,
+    resetFormAndSteps,
+  } = useForm();
 
-const Actions = ({
-  activeStep,
-  nextStep,
-  prevStep,
-  handleConfirm,
-}: ActionsProps) => {
+  const handleNextStepClick = () => {
+    if (validateForm(activeStep)) {
+      nextStep();
+    }
+  };
+
+  const handleConfirm = () => {
+    if (validateForm(activeStep)) {
+      setIsConfirmed(true);
+    }
+  };
+
+  if (isConfirmed) {
+    return (
+      <ActionsContainer>
+        <ActionButton
+          onClick={resetFormAndSteps}
+          text='Start Over'
+          variant='primaryButton'
+          isFullWidth
+        />
+      </ActionsContainer>
+    );
+  }
+
   return (
     <ActionsContainer>
       {activeStep !== 1 && (
-        <Button variant='text' onClick={prevStep}>
-          Go Back
-        </Button>
+        <ActionButton onClick={prevStep} text='Go Back' variant='text' />
       )}
       {activeStep !== 4 ? (
-        <Button
+        <ActionButton
+          onClick={handleNextStepClick}
+          text='Next Step'
           variant='primaryButton'
-          onClick={nextStep}
-          size='large'
-          sx={{ marginLeft: 'auto' }}
-        >
-          Next Step
-        </Button>
+        />
       ) : (
-        <Button
-          variant='secondaryButton'
+        <ActionButton
           onClick={handleConfirm}
-          size='large'
-          sx={{ marginLeft: 'auto' }}
-        >
-          Confirm
-        </Button>
+          text='Confirm'
+          variant='secondaryButton'
+        />
       )}
     </ActionsContainer>
   );
