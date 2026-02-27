@@ -1,6 +1,6 @@
-// PlansSection.tsx
+// PlansSection.tsx - REFACTORED VERSION
 import { FormGroup } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import Card from '../../../../components/Card';
 import { plansData } from '../../../../data/plansData';
 import { useForm } from '../../../../hooks';
@@ -16,76 +16,67 @@ import {
 const PlansSection = () => {
   const { formData, updatePlan } = useForm();
 
-  // Inicializa isChecked com base no billingPeriod salvo no formData
-  const [isChecked, setIsChecked] = useState<boolean>(
-    formData.selectedPlan?.billingPeriod === 'yearly'
-  );
+  // Derive state from formData instead of maintaining local state
+  // This prevents unnecessary re-renders and state sync issues
+  const selectedPlanTitle = formData.selectedPlan?.title || plansData[0].title;
+  const isYearly = formData.selectedPlan?.billingPeriod === 'yearly';
 
-  const [selectedPlanTitle, setSelectedPlanTitle] = useState<string>(
-    formData.selectedPlan?.title || plansData[0].title
-  );
-
-  // Função para atualizar o plano no contexto, considerando o período atual
+  /**
+   * Updates the selected plan in the form context
+   * Memoized to prevent unnecessary re-creations
+   */
   const updatePlanInContext = useCallback(
-    (planTitle: string, period: BillingPeriod) => {
-      const fullPlanObject = plansData.find(plan => plan.title === planTitle);
+    (planTitle: string, billingPeriod: BillingPeriod) => {
+      const fullPlan = plansData.find(plan => plan.title === planTitle);
 
-      if (fullPlanObject) {
-        const priceToSave =
-          period === 'yearly'
-            ? fullPlanObject.yearlyPrice
-            : fullPlanObject.monthlyPrice;
-        const planToSave: ISelectedPlan = {
-          title: fullPlanObject.title,
-          price: priceToSave,
-          discount: fullPlanObject.discount,
-          billingPeriod: period, // Salva o período de faturamento
-        };
-        updatePlan(planToSave);
-      } else {
+      if (!fullPlan) {
         updatePlan(null);
+        return;
       }
+
+      const price =
+        billingPeriod === 'yearly'
+          ? fullPlan.yearlyPrice
+          : fullPlan.monthlyPrice;
+
+      const planToSave: ISelectedPlan = {
+        title: fullPlan.title,
+        price,
+        discount: fullPlan.discount,
+        billingPeriod,
+      };
+
+      updatePlan(planToSave);
     },
     [updatePlan]
   );
 
-  // Efeito para sincronizar o estado local 'selectedPlanTitle' e 'isChecked'
-  useEffect(() => {
-    if (formData.selectedPlan) {
-      // Sincroniza o título do plano
-      if (formData.selectedPlan.title !== selectedPlanTitle) {
-        setSelectedPlanTitle(formData.selectedPlan.title);
-      }
-      // Sincroniza o estado do switch
-      const newIsChecked = formData.selectedPlan.billingPeriod === 'yearly';
-      if (newIsChecked !== isChecked) {
-        setIsChecked(newIsChecked);
-      }
-    }
-  }, [formData.selectedPlan, selectedPlanTitle, isChecked]); // Adicionado isChecked às dependências
+  /**
+   * Handles plan card selection
+   */
+  const handlePlanSelect = useCallback(
+    (planTitle: string) => {
+      const currentBillingPeriod = isYearly ? 'yearly' : 'monthly';
+      updatePlanInContext(planTitle, currentBillingPeriod);
+    },
+    [isYearly, updatePlanInContext]
+  );
 
-  // Handler para a seleção do plano (clique no card)
-  const handlePlan = (cardPlanTitle: string) => {
-    setSelectedPlanTitle(cardPlanTitle);
-    // Passa o período atual (mensal ou anual) para a função de atualização
-    updatePlanInContext(cardPlanTitle, isChecked ? 'yearly' : 'monthly');
-  };
+  /**
+   * Handles billing period toggle (monthly/yearly)
+   */
+  const handleBillingPeriodChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newBillingPeriod: BillingPeriod = event.target.checked
+        ? 'yearly'
+        : 'monthly';
 
-  // Handler para o switch de mensal/anual
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newIsChecked = event.target.checked;
-    setIsChecked(newIsChecked); // Atualiza o estado local do switch
-
-    const newBillingPeriod: BillingPeriod = newIsChecked ? 'yearly' : 'monthly';
-
-    // Se há um plano selecionado, atualiza-o com o novo período
-    if (formData.selectedPlan) {
-      updatePlanInContext(formData.selectedPlan.title, newBillingPeriod);
-    } else {
-      // Caso contrário, atualiza o plano padrão "Arcade" com o novo período
-      updatePlanInContext(plansData[0].title, newBillingPeriod);
-    }
-  };
+      // Keep the currently selected plan, just update the billing period
+      const currentPlanTitle = selectedPlanTitle || plansData[0].title;
+      updatePlanInContext(currentPlanTitle, newBillingPeriod);
+    },
+    [selectedPlanTitle, updatePlanInContext]
+  );
 
   return (
     <StyledContainer>
@@ -95,24 +86,23 @@ const PlansSection = () => {
             key={card.title}
             selectedPlan={card.title === selectedPlanTitle}
             title={card.title}
-            price={isChecked ? card.yearlyPrice : card.monthlyPrice}
+            price={isYearly ? card.yearlyPrice : card.monthlyPrice}
             icon={card.icon}
-            discount={isChecked && card.discount}
-            onClick={() => handlePlan(card.title)}
+            discount={isYearly && card.discount}
+            onClick={() => handlePlanSelect(card.title)}
           />
         ))}
       </CardsWrapper>
+
       <FormGroup>
         <PeriodSelectorSection>
-          <StyledTypography isChecked={isChecked}>Monthly</StyledTypography>{' '}
-          {/* Invertido para refletir o estado do switch */}
+          <StyledTypography isChecked={!isYearly}>Monthly</StyledTypography>
           <StyledSwitch
-            checked={isChecked}
-            onChange={handleChange}
+            checked={isYearly}
+            onChange={handleBillingPeriodChange}
             slotProps={{ input: { 'aria-label': 'payment type' } }}
           />
-          <StyledTypography isChecked={!isChecked}>Yearly</StyledTypography>{' '}
-          {/* Invertido para refletir o estado do switch */}
+          <StyledTypography isChecked={isYearly}>Yearly</StyledTypography>
         </PeriodSelectorSection>
       </FormGroup>
     </StyledContainer>
