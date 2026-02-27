@@ -1,7 +1,8 @@
+import { Box, CircularProgress } from '@mui/material';
 import { lazy, Suspense } from 'react';
-import { CircularProgress, Box } from '@mui/material';
-import { Header } from '../../components/layout';
 import { ErrorBoundary } from '../../components';
+import { Header } from '../../components/layout';
+import { useForm } from '../../hooks';
 import { StyledContainer } from './styled';
 
 const PersonalInfoForm = lazy(() => import('./steps/PersonalInfoForm'));
@@ -21,17 +22,9 @@ const LoadingSpinner = () => (
   </Box>
 );
 
-interface MultiStepFormProps {
-  activeStep: number;
-  isConfirmed: boolean;
-  navigateTo: (step: number) => void;
-}
+export default function MultiStepForm() {
+  const { activeStep, isConfirmed, navigateTo } = useForm();
 
-const MultiStepForm = ({
-  activeStep,
-  isConfirmed,
-  navigateTo,
-}: MultiStepFormProps) => {
   if (isConfirmed) {
     return (
       <StyledContainer>
@@ -55,6 +48,4 @@ const MultiStepForm = ({
       </ErrorBoundary>
     </StyledContainer>
   );
-};
-
-export default MultiStepForm;
+}

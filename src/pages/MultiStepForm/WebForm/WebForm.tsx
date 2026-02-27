@@ -3,42 +3,14 @@ import { Actions } from '../../../components/layout';
 import MultiStepForm from '../MultiStepForm';
 import { StyledFormContainer, StyledStack } from './styled';
 
-interface WebFormProps {
-  activeStep: number;
-  isConfirmed: boolean;
-  prevStep: () => void;
-  nextStep: () => void;
-  navigateTo: (step: number) => void;
-  handleConfirm: () => void;
-}
-
-const WebForm = ({
-  activeStep,
-  isConfirmed,
-  navigateTo,
-  nextStep,
-  handleConfirm,
-  prevStep,
-}: WebFormProps) => {
+export default function WebForm() {
   return (
     <StyledFormContainer id='multi-step-form-container'>
-      <Navbar activeStep={activeStep} />
+      <Navbar />
       <StyledStack>
-        <MultiStepForm
-          activeStep={activeStep}
-          isConfirmed={isConfirmed}
-          navigateTo={navigateTo}
-        />
-
-        <Actions
-          activeStep={activeStep}
-          nextStep={nextStep}
-          prevStep={prevStep}
-          handleConfirm={handleConfirm}
-        />
+        <MultiStepForm />
+        <Actions />
       </StyledStack>
     </StyledFormContainer>
   );
-};
-
-export default WebForm;
+}

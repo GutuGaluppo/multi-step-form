@@ -1,12 +1,11 @@
 import mobileImage from '../../../../assets/images/bg-sidebar-mobile.svg';
+import { useForm } from '../../../../hooks';
 import StepList from '../StepList';
 import { NavbarContainer } from './styled';
 
-interface PropsType {
-  activeStep: number;
-}
+export default function MobileNavbar() {
+  const { activeStep } = useForm();
 
-const MobileNavbar = ({ activeStep }: PropsType) => {
   return (
     <NavbarContainer id='mobile-Navbar'>
       <img
@@ -18,6 +17,4 @@ const MobileNavbar = ({ activeStep }: PropsType) => {
       <StepList activeStep={activeStep} />
     </NavbarContainer>
   );
-};
-
-export default MobileNavbar;
+}

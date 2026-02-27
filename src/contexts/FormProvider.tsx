@@ -1,4 +1,3 @@
-// FormContext.tsx
 import type { ReactNode } from 'react';
 import React, { useCallback, useMemo, useState } from 'react';
 import type {
@@ -12,10 +11,13 @@ import { FormContext } from './FormContext';
 import { plansData } from '../data/plansData';
 import { validateStep } from '../utils/validation';
 import { DEFAULT_PLAN_TITLE } from '../constants';
+import { stepsData } from '../data/stepsData';
 
 interface FormProviderProps {
   children: ReactNode;
 }
+
+const TOTAL_STEPS = stepsData.length;
 
 export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
   const initialSelectedPlan = useMemo(() => {
@@ -49,48 +51,53 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
 
   const [errors, setErrors] = useState<FormErrors>({});
 
+  const [activeStep, setActiveStep] = useState(1);
+
   // Função de validação usando utilitários separados
-  const validateForm = (step?: number): boolean => {
-    let newErrors: FormErrors = {};
+  const validateForm = useCallback(
+    (step?: number): boolean => {
+      let newErrors: FormErrors = {};
 
-    if (step) {
-      // Valida apenas o step específico
-      newErrors = validateStep(step, formData);
-    } else {
-      // Valida todos os steps se nenhum step for especificado
-      for (let i = 1; i <= 4; i++) {
-        const stepErrors = validateStep(i, formData);
-        newErrors = { ...newErrors, ...stepErrors };
+      if (step !== undefined) {
+        // Valida apenas o step específico
+        newErrors = validateStep(step, formData);
+      } else {
+        // Valida todos os steps se nenhum step for especificado
+        for (let i = 1; i <= TOTAL_STEPS; i++) {
+          const stepErrors = validateStep(i, formData);
+          newErrors = { ...newErrors, ...stepErrors };
+        }
       }
-    }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+    },
+    [formData]
+  );
 
   // Funções de atualização de dados
-  const updateFormData = (data: Partial<IFormData>) => {
+  const updateFormData = useCallback((data: Partial<IFormData>) => {
     setFormData(prevData => ({
       ...prevData,
       ...data,
     }));
-  };
+  }, []);
 
   // Função para atualizar o plano selecionado
-  const updatePlan = (plan: ISelectedPlan | null) => {
+  const updatePlan = useCallback((plan: ISelectedPlan | null) => {
     setFormData(prevData => ({
       ...prevData,
       selectedPlan: plan,
     }));
-  };
+  }, []);
 
   // Função para atualizar os add-ons selecionados
-  const updateAddOns = (addOns: IAddOn[]) => {
+  const updateAddOns = useCallback((addOns: IAddOn[]) => {
     setFormData(prevData => ({
       ...prevData,
       selectedAddOns: addOns,
     }));
-  };
+  }, []);
 
   const resetForm = useCallback(() => {
     setFormData({
@@ -104,6 +111,25 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     setIsConfirmed(false);
   }, [initialSelectedPlan]);
 
+  const nextStep = useCallback(() => {
+    setActiveStep(prev => (prev < TOTAL_STEPS ? prev + 1 : prev));
+  }, []);
+
+  const prevStep = useCallback(() => {
+    setActiveStep(prev => (prev > 1 ? prev - 1 : prev));
+  }, []);
+
+  const navigateTo = useCallback((step: number) => {
+    if (step >= 1 && step <= TOTAL_STEPS) {
+      setActiveStep(step);
+    }
+  }, []);
+
+  const resetFormAndSteps = useCallback(() => {
+    resetForm();
+    setActiveStep(1);
+  }, [resetForm]);
+
   return (
     <FormContext.Provider
       value={{
@@ -112,12 +138,17 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
         updateFormData,
         updatePlan,
         updateAddOns,
+        activeStep,
+        nextStep,
+        prevStep,
+        navigateTo,
         errors,
         setErrors,
         validateForm,
         isConfirmed,
         setIsConfirmed,
         resetForm,
+        resetFormAndSteps,
       }}
     >
       {children}

@@ -8,12 +8,6 @@ export interface IStepItem {
   subTitle: string;
 }
 
-export interface IFormDataLegacy {
-  name: string;
-  email: string;
-  phone: string;
-}
-
 export interface IAddOn {
   name: string;
   title: string;
@@ -40,7 +34,15 @@ export interface IFormData {
 
 export type FormErrors = Partial<Record<keyof IFormData, string>>;
 
-export interface IFormContext {
+export interface IMultiStepFormContext {
+  activeStep: number;
+  nextStep: () => void;
+  prevStep: () => void;
+  navigateTo: (step: number) => void;
+  resetFormAndSteps: () => void;
+}
+
+export interface IFormContext extends IMultiStepFormContext {
   formData: IFormData;
   setFormData: Dispatch<SetStateAction<IFormData>>;
   errors: FormErrors;
