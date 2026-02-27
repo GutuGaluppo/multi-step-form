@@ -1,17 +1,23 @@
 import { stepsData } from '../../../data/stepsData';
 import { StyledSubtitle, StyledTitle } from './styled';
 
-interface HeaderProps {
+interface StepInfoProps {
   activeStep: number;
 }
 
-const Header = ({ activeStep }: HeaderProps) => {
+/**
+ * StepInfo component displays the title and subtitle for the current step
+ * Shows context-specific information to guide the user through the form
+ */
+const StepInfo = ({ activeStep }: StepInfoProps) => {
   const currentStepData = stepsData[activeStep - 1];
-  const { title, subTitle } = currentStepData;
 
   if (!currentStepData) {
     return null;
   }
+
+  const { title, subTitle } = currentStepData;
+
   return (
     <header>
       <StyledTitle variant='h4' component='h1'>
@@ -22,4 +28,4 @@ const Header = ({ activeStep }: HeaderProps) => {
   );
 };
 
-export default Header;
+export default StepInfo;

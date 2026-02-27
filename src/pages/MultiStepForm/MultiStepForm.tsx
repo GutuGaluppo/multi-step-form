@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from '@mui/material';
 import { lazy, Suspense } from 'react';
 import { ErrorBoundary } from '../../components';
-import { Header } from '../../components/layout';
+import { StepInfo } from '../../components/layout';
 import { useForm } from '../../hooks';
 import { StyledContainer } from './styled';
 
@@ -36,7 +36,7 @@ export default function MultiStepForm() {
   }
   return (
     <StyledContainer>
-      <Header activeStep={activeStep} />
+      <StepInfo activeStep={activeStep} />
 
       <ErrorBoundary>
         <Suspense fallback={<LoadingSpinner />}>
