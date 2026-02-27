@@ -4,12 +4,12 @@
  * @returns O valor numérico do preço.
  */
 export const extractPriceValue = (priceString: string): number => {
-	// Remove '$', '+', '/mo', '/yr' e espaços, depois converte para número
-	const cleanedPrice = priceString
-		.replace(/[+$]/g, "")
-		.replace(/\/mo|\/yr/g, "")
-		.trim();
-	return parseFloat(cleanedPrice);
+  // Remove '$', '+', '/mo', '/yr' e espaços, depois converte para número
+  const cleanedPrice = priceString
+    .replace(/[+$]/g, '')
+    .replace(/\/mo|\/yr/g, '')
+    .trim();
+  return parseFloat(cleanedPrice);
 };
 
 /**
@@ -19,9 +19,9 @@ export const extractPriceValue = (priceString: string): number => {
  * @returns A string de preço formatada (ex: "$9/mo", "$120/yr").
  */
 export const formatPrice = (
-	value: number,
-	period: "monthly" | "yearly"
+  value: number,
+  period: 'monthly' | 'yearly'
 ): string => {
-	const suffix = period === "monthly" ? "/mo" : "/yr";
-	return `$${value}${suffix}`;
+  const suffix = period === 'monthly' ? '/mo' : '/yr';
+  return `$${value}${suffix}`;
 };

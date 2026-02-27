@@ -1,1 +1,1 @@
-export { default } from "./AddOns";
+export { default } from './AddOns';

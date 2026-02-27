@@ -5,19 +5,19 @@ import {
   Stack,
   Typography,
   useTheme,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { addOnsData } from "../../../../data/addOnsData";
-import { useForm } from "../../../../hooks";
-import type { AddOn } from "../../../../types/types";
-import { StyledBox, StyledFormControlLabel } from "./styled";
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { addOnsData } from '../../../../data/addOnsData';
+import { useForm } from '../../../../hooks';
+import type { IAddOn } from '../../../../types/types';
+import { StyledBox, StyledFormControlLabel } from './styled';
 
 const AddOns = () => {
   const theme = useTheme();
   const { formData, updateAddOns } = useForm();
 
-  const [selectedLocalAddOns, setSelectedLocalAddOns] = useState<AddOn[]>(
-    formData.selectedAddOns || [],
+  const [selectedLocalAddOns, setSelectedLocalAddOns] = useState<IAddOn[]>(
+    formData.selectedAddOns || []
   );
 
   useEffect(() => {
@@ -31,16 +31,16 @@ const AddOns = () => {
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    addOnObject: AddOn,
+    addOnObject: IAddOn
   ) => {
     const { checked } = event.target;
-    let newSelectedAddOns: AddOn[];
+    let newSelectedAddOns: IAddOn[];
 
     if (checked) {
       newSelectedAddOns = [...selectedLocalAddOns, addOnObject];
     } else {
       newSelectedAddOns = selectedLocalAddOns.filter(
-        (addOn) => addOn.name !== addOnObject.name,
+        addOn => addOn.name !== addOnObject.name
       );
     }
 
@@ -49,18 +49,18 @@ const AddOns = () => {
   };
 
   const isAddOnSelected = (addOnName: string) =>
-    selectedLocalAddOns.some((addOn) => addOn.name === addOnName);
+    selectedLocalAddOns.some(addOn => addOn.name === addOnName);
 
   return (
     <>
-      <FormControl id="form-control">
+      <FormControl id='form-control'>
         <FormGroup
           sx={{
             gap: theme.spacing(2),
-            alignItems: "center",
+            alignItems: 'center',
           }}
         >
-          {addOnsData.map((addOn) => (
+          {addOnsData.map(addOn => (
             <StyledFormControlLabel
               key={addOn.name}
               isChecked={isAddOnSelected(addOn.name)}
@@ -68,19 +68,19 @@ const AddOns = () => {
                 <Checkbox
                   disableRipple
                   checked={isAddOnSelected(addOn.name)}
-                  onChange={(e) => handleChange(e, addOn)}
+                  onChange={e => handleChange(e, addOn)}
                   name={addOn.name}
                 />
               }
               label={
                 <StyledBox>
                   <Stack>
-                    <Typography variant="body1">{addOn.title}</Typography>
-                    <Typography variant="caption">
+                    <Typography variant='body1'>{addOn.title}</Typography>
+                    <Typography variant='caption'>
                       {addOn.description}
                     </Typography>
                   </Stack>
-                  <Typography variant="body2">{addOn.price}</Typography>
+                  <Typography variant='body2'>{addOn.price}</Typography>
                 </StyledBox>
               }
             />

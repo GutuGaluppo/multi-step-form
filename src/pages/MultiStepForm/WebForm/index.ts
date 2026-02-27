@@ -1,1 +1,1 @@
-export { default } from "./WebForm";
+export { default } from './WebForm';

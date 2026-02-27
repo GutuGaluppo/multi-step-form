@@ -1,6 +1,6 @@
-import type { StepItemType } from "../types";
+import type { IStepItem } from "../types";
 
-export const stepsData: StepItemType[] = [
+export const stepsData: IStepItem[] = [
 	{
 		index: 1,
 		step: "1 Step",

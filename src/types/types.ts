@@ -1,55 +1,55 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from 'react';
 
-export interface StepItemType {
-	index: number;
-	step: string;
-	label: string;
-	title: string;
-	subTitle: string;
+export interface IStepItem {
+  index: number;
+  step: string;
+  label: string;
+  title: string;
+  subTitle: string;
 }
 
-export interface FormDataInterface {
-	name: string;
-	email: string;
-	phone: string;
+export interface IFormDataLegacy {
+  name: string;
+  email: string;
+  phone: string;
 }
 
-export interface AddOn {
-	name: string;
-	title: string;
-	description: string;
-	price: string;
+export interface IAddOn {
+  name: string;
+  title: string;
+  description: string;
+  price: string;
 }
 
-export type BillingPeriod = "monthly" | "yearly";
+export type BillingPeriod = 'monthly' | 'yearly';
 
-export interface SelectedPlan {
-	title: string;
-	price: string;
-	discount: string;
-	billingPeriod: BillingPeriod;
+export interface ISelectedPlan {
+  title: string;
+  price: string;
+  discount: string;
+  billingPeriod: BillingPeriod;
 }
 
-export interface FormData {
-	name: string;
-	email: string;
-	phone: string;
-	selectedPlan: SelectedPlan | null;
-	selectedAddOns: AddOn[];
+export interface IFormData {
+  name: string;
+  email: string;
+  phone: string;
+  selectedPlan: ISelectedPlan | null;
+  selectedAddOns: IAddOn[];
 }
 
-export type FormErrors = Partial<Record<keyof FormData, string>>;
+export type FormErrors = Partial<Record<keyof IFormData, string>>;
 
-export interface FormContextType {
-	formData: FormData;
-	setFormData: Dispatch<SetStateAction<FormData>>;
-	errors: FormErrors;
-	setErrors: Dispatch<SetStateAction<FormErrors>>;
-	isConfirmed: boolean;
-	setIsConfirmed: Dispatch<SetStateAction<boolean>>;
-	updateFormData: (data: Partial<FormData>) => void;
-	updatePlan: (plan: SelectedPlan | null) => void;
-	updateAddOns: (addOns: AddOn[]) => void;
-	validateForm: (step?: number) => boolean;
-	resetForm: () => void;
+export interface IFormContext {
+  formData: IFormData;
+  setFormData: Dispatch<SetStateAction<IFormData>>;
+  errors: FormErrors;
+  setErrors: Dispatch<SetStateAction<FormErrors>>;
+  isConfirmed: boolean;
+  setIsConfirmed: Dispatch<SetStateAction<boolean>>;
+  updateFormData: (data: Partial<IFormData>) => void;
+  updatePlan: (plan: ISelectedPlan | null) => void;
+  updateAddOns: (addOns: IAddOn[]) => void;
+  validateForm: (step?: number) => boolean;
+  resetForm: () => void;
 }

@@ -1,5 +1,5 @@
-import { useIsMobile } from "../../hooks";
-import { Discount, Price, StyledCard } from "./styled";
+import { useIsMobile } from '../../hooks';
+import { Discount, Price, StyledCard } from './styled';
 
 interface CardPropsType {
   selectedPlan: boolean;
@@ -22,7 +22,7 @@ const Card = ({
 
   return (
     <StyledCard onClick={onClick} selectedPlan={selectedPlan}>
-      <img src={icon} alt="" width={40} />
+      <img src={icon} alt='' width={40} />
       <div>
         <h4>{title}</h4>
         <Price>{price}</Price>
